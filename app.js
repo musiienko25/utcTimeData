@@ -30,13 +30,13 @@ const insertRowToBigQuery = async (mdtTimestamp) => {
     .split("/");
   const row = [
     {
-      original_timestamp: moment.utc(mdtTimestamp).format(),
-      original_timezone: "UTC",
-      timestamp: mdtTimestamp,
-      timezone: "MDT",
-      day: Number(date),
-      month: month,
-      year: year,
+      string_field_0: moment.utc(mdtTimestamp).format(),
+      string_field_1: "UTC",
+      string_field_2: mdtTimestamp.toString(),
+      string_field_3: "MDT",
+      string_field_4: date,
+      string_field_5: month,
+      string_field_6: year,
     },
   ];
   console.log(row);
