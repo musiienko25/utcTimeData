@@ -44,6 +44,7 @@ Start the example!
 npm start
 ```
 ## Result
-![gitUtc22](https://github.com/musiienko25/utcTimeData/assets/42385970/888b47f9-a5c9-4bd7-add8-c63ef897d5e6)
+
+![utcgif23](https://github.com/musiienko25/utcTimeData/assets/42385970/172ce525-c09f-4a98-a861-9e7befe33f6a)
 
 
