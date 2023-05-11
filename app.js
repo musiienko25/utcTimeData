@@ -33,23 +33,25 @@ const insertRowToBigQuery = async (mdtTimestamp) => {
   const timestamp = mdtTimestamp;
   const timezone = "MDT";
   const day = Number(date);
-  const row = [
-    {
-      string_field_0: originalTimestamp,
-      string_field_1: originalTimezone,
-      string_field_2: String(timestamp),
-      string_field_3: timezone,
-      string_field_4: String(day),
-      string_field_5: month,
-      string_field_6: year,
-    },
-  ];
+
+  const row = {
+    originalTimestamp: originalTimestamp,
+    originalTimezone: originalTimezone,
+    timestamp: String(timestamp),
+    timezone: timezone,
+    day: String(day),
+    month: month,
+    year: year,
+  };
+
   console.log(row);
+
   try {
     const [result] = await bigqueryClient
       .dataset(process.env.DATASET_ID)
       .table(process.env.TABLE_ID)
       .insert(row);
+
     console.log(`Inserted row: ${JSON.stringify(result)}`);
   } catch (error) {
     console.error(`Failed to insert row to BigQuery: ${error}`);
