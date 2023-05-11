@@ -4,7 +4,6 @@ const moment = require("moment-timezone");
 
 require("dotenv").config();
 
-// Set up Google Cloud BigQuery API client
 const bigqueryClient = new BigQuery({
   projectId: process.env.PROJECT_ID,
   credentials: {
@@ -13,10 +12,8 @@ const bigqueryClient = new BigQuery({
   },
 });
 
-// Set up UTC API endpoint URL
 const UTC_API_URL = "http://worldtimeapi.org/api/timezone/Etc/UTC";
 
-// Get current UTC time data
 const getCurrentUTCTime = async () => {
   try {
     const response = await axios.get(UTC_API_URL);
@@ -27,14 +24,12 @@ const getCurrentUTCTime = async () => {
   }
 };
 
-// Convert UTC time data into MDT timezone timestamp
 const convertToMDTTimestamp = (utcData) => {
   const utcTimestamp = moment.utc(utcData.datetime).valueOf();
   const mdtTimestamp = moment(utcTimestamp).tz("America/Denver").valueOf();
   return mdtTimestamp;
 };
 
-// Insert new row into BigQuery table
 const insertRowToBigQuery = async (mdtTimestamp) => {
   const [date, month, year] = moment(mdtTimestamp)
     .format("DD/MM/YYYY")
@@ -64,7 +59,6 @@ const insertRowToBigQuery = async (mdtTimestamp) => {
   }
 };
 
-// Main function to retrieve UTC time data, convert it, and insert it into BigQuery
 const main = async () => {
   const utcData = await getCurrentUTCTime();
   if (utcData) {
