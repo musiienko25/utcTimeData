@@ -15,7 +15,7 @@ const bigqueryClient = new BigQuery({
 const UTC_API_URL = "http://worldtimeapi.org/api/timezone/Etc/utc";
 
 const getCurrentUTCTime = () => {
-  return axios(UTC_API_URL);
+  return axios(UTC_API_URL, { timeout: 5000 });
 };
 
 const convertToMDTTimestamp = (utcData) => {
