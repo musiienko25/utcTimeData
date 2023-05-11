@@ -1,5 +1,4 @@
 const { BigQuery } = require("@google-cloud/bigquery");
-const axios = require("axios");
 const moment = require("moment-timezone");
 
 require("dotenv").config();
@@ -14,14 +13,23 @@ const bigqueryClient = new BigQuery({
 
 const UTC_API_URL = "http://worldtimeapi.org/api/timezone/Etc/UTC";
 
-const getCurrentUTCTime = async () => {
-  try {
-    const response = await axios.get(UTC_API_URL);
-    return response.data;
-  } catch (error) {
-    console.error(`Failed to get UTC time data: ${error}`);
-    return null;
-  }
+const fetch = require("node-fetch");
+
+const getCurrentUTCTime = () => {
+  return fetch(UTC_API_URL)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Failed to get UTC time data: ${response.statusText}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      return data;
+    })
+    .catch((error) => {
+      console.error(`Failed to get UTC time data: ${error}`);
+      return null;
+    });
 };
 
 const convertToMDTTimestamp = (utcData) => {
