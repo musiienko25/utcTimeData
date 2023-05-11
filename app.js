@@ -1,5 +1,6 @@
 const { BigQuery } = require("@google-cloud/bigquery");
 const moment = require("moment-timezone");
+const axios = require("axios");
 
 require("dotenv").config();
 
@@ -11,25 +12,10 @@ const bigqueryClient = new BigQuery({
   },
 });
 
-const UTC_API_URL = "http://worldtimeapi.org/api/timezone/Etc/UTC";
-
-const fetch = require("node-fetch");
+const UTC_API_URL = "http://worldtimeapi.org/api/timezone/Etc/utc";
 
 const getCurrentUTCTime = () => {
-  return fetch(UTC_API_URL)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`Failed to get UTC time data: ${response.statusText}`);
-      }
-      return response.json();
-    })
-    .then((data) => {
-      return data;
-    })
-    .catch((error) => {
-      console.error(`Failed to get UTC time data: ${error}`);
-      return null;
-    });
+  return axios(UTC_API_URL);
 };
 
 const convertToMDTTimestamp = (utcData) => {
@@ -47,15 +33,18 @@ const insertRowToBigQuery = async (mdtTimestamp) => {
   const timestamp = mdtTimestamp;
   const timezone = "MDT";
   const day = Number(date);
-  const row = {
-    originalTimestamp,
-    originalTimezone,
-    timestamp,
-    timezone,
-    day,
-    month,
-    year,
-  };
+  const row = [
+    {
+      string_field_0: originalTimestamp,
+      string_field_1: originalTimezone,
+      string_field_2: String(timestamp),
+      string_field_3: timezone,
+      string_field_4: String(day),
+      string_field_5: month,
+      string_field_6: year,
+    },
+  ];
+  console.log(row);
   try {
     const [result] = await bigqueryClient
       .dataset(process.env.DATASET_ID)
@@ -68,7 +57,25 @@ const insertRowToBigQuery = async (mdtTimestamp) => {
 };
 
 const main = async () => {
-  const utcData = await getCurrentUTCTime();
+  // const { data: utcData } = await getCurrentUTCTime();
+  const test = {
+    abbreviation: "UTC",
+    client_ip: "178.151.207.216",
+    datetime: "2023-05-11T13:31:08.193649+00:00",
+    day_of_week: 4,
+    day_of_year: 131,
+    dst: false,
+    dst_from: null,
+    dst_offset: 0,
+    dst_until: null,
+    raw_offset: 0,
+    timezone: "Etc/UTC",
+    unixtime: 1683811868,
+    utc_datetime: "2023-05-11T13:31:08.193649+00:00",
+    utc_offset: "+00:00",
+    week_number: 19,
+  };
+  const utcData = test;
   if (utcData) {
     const mdtTimestamp = convertToMDTTimestamp(utcData);
     insertRowToBigQuery(mdtTimestamp);
