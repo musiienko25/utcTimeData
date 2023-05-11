@@ -45,5 +45,5 @@ Note: Please be sure to respect all terms of use for the APIs you interact with 
 Start the example!
 
 ```
-yarn start
+npm start
 ```
