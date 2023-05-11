@@ -1,8 +1,4 @@
-# Example of NEAR Wallet integration
-
-Homework Assignment:
-
-Title: Integration of UTC Time Data with a Database
+# Integration of UTC Time Data with a Database
 
 Objective: Demonstrate your ability as a JavaScript developer using Node.js to retrieve UTC time data from an external platform, modify it to the correct timestamp, and post it into a database like Google BigQuery.
 
