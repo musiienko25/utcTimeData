@@ -1,0 +1,17 @@
+{
+    "name": "utc-time-to-bigquery",
+    "version": "1.0.0",
+    "description": "A Node.js application to retrieve UTC time data and post it to Google BigQuery",
+    "main": "app.js",
+    "dependencies": {
+        "@google-cloud/bigquery": "^6.2.0",
+        "axios": "^1.4.0",
+        "dotenv": "^16.0.3",
+        "google-auth-library": "^8.8.0",
+        "moment-timezone": "^0.5.43",
+        "node-fetch": "^3.3.1"
+    },
+    "scripts": {
+        "start": "node app.js"
+    }
+}
